@@ -19,8 +19,11 @@
 		F33EFCB92A5DD5E60065D3B5 /* GraphQLUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCB82A5DD5E60065D3B5 /* GraphQLUITestsLaunchTests.swift */; };
 		F33EFCD52A5F24300065D3B5 /* Quries.graphql in Resources */ = {isa = PBXBuildFile; fileRef = F33EFCD42A5F24300065D3B5 /* Quries.graphql */; };
 		F33EFCE52A5FFAAB0065D3B5 /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = F33EFCE42A5FFAAB0065D3B5 /* schema.json */; };
-		F33EFCE82A5FFEC70065D3B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCE72A5FFEC70065D3B5 /* API.swift */; };
 		F33EFCEA2A6004800065D3B5 /* products.json in Resources */ = {isa = PBXBuildFile; fileRef = F33EFCE92A6004800065D3B5 /* products.json */; };
+		F33EFCED2A601A750065D3B5 /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCEC2A601A750065D3B5 /* ProductDetailView.swift */; };
+		F33EFCF02A601AC00065D3B5 /* ProductViewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCEF2A601AC00065D3B5 /* ProductViewModal.swift */; };
+		F33EFCF32A601AFA0065D3B5 /* Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCF22A601AFA0065D3B5 /* Modals.swift */; };
+		F33EFCF62A601B4D0065D3B5 /* Utills.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCF52A601B4D0065D3B5 /* Utills.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +67,10 @@
 		F33EFCE42A5FFAAB0065D3B5 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
 		F33EFCE72A5FFEC70065D3B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		F33EFCE92A6004800065D3B5 /* products.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = products.json; sourceTree = "<group>"; };
+		F33EFCEC2A601A750065D3B5 /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailView.swift; sourceTree = "<group>"; };
+		F33EFCEF2A601AC00065D3B5 /* ProductViewModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModal.swift; sourceTree = "<group>"; };
+		F33EFCF22A601AFA0065D3B5 /* Modals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modals.swift; sourceTree = "<group>"; };
+		F33EFCF52A601B4D0065D3B5 /* Utills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utills.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,12 +149,16 @@
 		F33EFC9A2A5DD5E20065D3B5 /* GraphQL */ = {
 			isa = PBXGroup;
 			children = (
+				F33EFC9B2A5DD5E20065D3B5 /* GraphQLApp.swift */,
 				F33EFCE72A5FFEC70065D3B5 /* API.swift */,
-				F33EFCEB2A60049C0065D3B5 /* Resources */,
 				F33EFCE42A5FFAAB0065D3B5 /* schema.json */,
 				F33EFCD42A5F24300065D3B5 /* Quries.graphql */,
-				F33EFC9B2A5DD5E20065D3B5 /* GraphQLApp.swift */,
+				F33EFCF42A601B300065D3B5 /* Utills */,
+				F33EFCF12A601AE40065D3B5 /* Modals */,
+				F33EFCEE2A601AA90065D3B5 /* ViewModal */,
+				F33EFCEB2A60049C0065D3B5 /* Resources */,
 				F33EFC9D2A5DD5E20065D3B5 /* ContentView.swift */,
+				F33EFCEC2A601A750065D3B5 /* ProductDetailView.swift */,
 				F33EFC9F2A5DD5E60065D3B5 /* Assets.xcassets */,
 				F33EFCA12A5DD5E60065D3B5 /* Preview Content */,
 			);
@@ -185,6 +196,30 @@
 				F33EFCE92A6004800065D3B5 /* products.json */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		F33EFCEE2A601AA90065D3B5 /* ViewModal */ = {
+			isa = PBXGroup;
+			children = (
+				F33EFCEF2A601AC00065D3B5 /* ProductViewModal.swift */,
+			);
+			path = ViewModal;
+			sourceTree = "<group>";
+		};
+		F33EFCF12A601AE40065D3B5 /* Modals */ = {
+			isa = PBXGroup;
+			children = (
+				F33EFCF22A601AFA0065D3B5 /* Modals.swift */,
+			);
+			path = Modals;
+			sourceTree = "<group>";
+		};
+		F33EFCF42A601B300065D3B5 /* Utills */ = {
+			isa = PBXGroup;
+			children = (
+				F33EFCF52A601B4D0065D3B5 /* Utills.swift */,
+			);
+			path = Utills;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -448,8 +483,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				F33EFC9E2A5DD5E20065D3B5 /* ContentView.swift in Sources */,
-				F33EFCE82A5FFEC70065D3B5 /* API.swift in Sources */,
 				F33EFC9C2A5DD5E20065D3B5 /* GraphQLApp.swift in Sources */,
+				F33EFCF02A601AC00065D3B5 /* ProductViewModal.swift in Sources */,
+				F33EFCF32A601AFA0065D3B5 /* Modals.swift in Sources */,
+				F33EFCF62A601B4D0065D3B5 /* Utills.swift in Sources */,
+				F33EFCED2A601A750065D3B5 /* ProductDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
