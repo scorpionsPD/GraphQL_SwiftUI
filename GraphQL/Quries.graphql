@@ -1,0 +1,24 @@
+query ProductQuery{
+  products(
+    filter: {
+      category_id: { eq: "2324" }
+    }
+  ) {
+    items {
+      id
+      sku
+      name
+      price {
+        regularPrice {
+          amount {
+            currency
+            value
+          }
+        }
+      }
+      image {
+        url
+      }
+    }
+  }
+}
