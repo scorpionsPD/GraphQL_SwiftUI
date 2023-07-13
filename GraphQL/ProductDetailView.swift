@@ -12,6 +12,9 @@ struct ProductDetailView: View {
     
     var body: some View {
         VStack {
+            // Product Name
+            Text(product.name)
+                .font(.headline)
             // Product Image
             AsyncImage(url: product.imageURL) {
                 // Placeholder view
@@ -32,7 +35,6 @@ struct ProductDetailView: View {
             Spacer() // Add some spacing at the bottom
         }
         .padding()
-        .navigationTitle(product.name)
     }
 }
 

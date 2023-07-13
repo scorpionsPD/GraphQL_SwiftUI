@@ -1,0 +1,18 @@
+PODS:
+  - Apollo (0.53.0):
+    - Apollo/Core (= 0.53.0)
+  - Apollo/Core (0.53.0)
+
+DEPENDENCIES:
+  - Apollo
+
+SPEC REPOS:
+  trunk:
+    - Apollo
+
+SPEC CHECKSUMS:
+  Apollo: 204819ea82022fbc59ad05056820df867f19bd02
+
+PODFILE CHECKSUM: 134ad8d183f8b17a80240e319d1991fbea72598b
+
+COCOAPODS: 1.12.1

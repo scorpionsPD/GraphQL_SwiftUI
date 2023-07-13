@@ -24,6 +24,7 @@
 		F33EFCF02A601AC00065D3B5 /* ProductViewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCEF2A601AC00065D3B5 /* ProductViewModal.swift */; };
 		F33EFCF32A601AFA0065D3B5 /* Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCF22A601AFA0065D3B5 /* Modals.swift */; };
 		F33EFCF62A601B4D0065D3B5 /* Utills.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCF52A601B4D0065D3B5 /* Utills.swift */; };
+		F33EFCF72A604D6E0065D3B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33EFCE72A5FFEC70065D3B5 /* API.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -488,6 +489,7 @@
 				F33EFCF32A601AFA0065D3B5 /* Modals.swift in Sources */,
 				F33EFCF62A601B4D0065D3B5 /* Utills.swift in Sources */,
 				F33EFCED2A601A750065D3B5 /* ProductDetailView.swift in Sources */,
+				F33EFCF72A604D6E0065D3B5 /* API.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

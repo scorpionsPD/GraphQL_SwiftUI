@@ -8,29 +8,93 @@
 import XCTest
 @testable import GraphQL
 
-final class GraphQLTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+class ContentViewTests: XCTestCase {
+    func testFetchProductsSuccess() {
+        let contentView = ContentView()
+        
+        // Access the view's @StateObject property
+        let viewModel = ProductViewModel()
+        
+        // Verify that the products list is initially empty
+        XCTAssertTrue(viewModel.products.isEmpty, "Products list should be empty")
+        
+        // Simulate the onAppear event to trigger data fetching
+        contentView.onAppear()
+        
+        // Assert that the products list is not empty after fetching
+        XCTAssertNotNil(viewModel.products)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testFetchProductsFailure() {
+        let viewModel = ProductViewModel(fileURL: URL(fileURLWithPath: "invalid/path.json"))
+        let contentView = ContentView()
+        
+        // Assign the created viewModel instance to the @StateObject property
+        //contentView.viewModel = viewModel
+        
+        // Verify that the products list is initially empty
+        XCTAssertTrue(viewModel.products.isEmpty, "Products list should be empty")
+        
+        // Simulate the onAppear event to trigger data fetching
+        contentView.onAppear()
+        
+        // Assert that the products list remains empty after a failed fetch
+        XCTAssertTrue(viewModel.products.isEmpty, "Products list should be empty")
     }
+}
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+class ProductViewModelTests: XCTestCase {
+    func testFetchProductsSuccess() {
+        let viewModel = ProductViewModel()
+        let expectation = XCTestExpectation(description: "Fetch products")
+        
+        viewModel.fetchProducts { result in
+            switch result {
+            case .success:
+                // Assert that the products array is not empty after fetching
+                XCTAssertFalse(viewModel.products.isEmpty, "Failed to fetch products")
+            case .failure(let error):
+                XCTFail("Failed to fetch products with error: \(error)")
+            }
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 5)
     }
+    
+    func testFetchProductsFailure() {
+        let viewModel = ProductViewModel(fileURL: URL(fileURLWithPath: "invalid/path.json"))
+        let expectation = XCTestExpectation(description: "Fetch products")
+        
+        viewModel.fetchProducts { result in
+            switch result {
+            case .success:
+                XCTFail("Fetching products succeeded unexpectedly")
+            case .failure:
+                // Assert that the products array is empty after a failed fetch
+                XCTAssertTrue(viewModel.products.isEmpty, "Products array should be empty")
+            }
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 5)
+    }
+}
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+class ImageLoaderTests: XCTestCase {
+    func testImageLoading() {
+        let imageURL = URL(string: "https://www.example.com/image.jpg")!
+        let imageLoader = ImageLoader(url: imageURL)
+        
+        // Add your assertions here to verify image loading behavior
+        // For example, you can assert that the image property is not nil after a certain amount of time
+        
+        // Wait for some time to allow the image to load
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            XCTAssertNotNil(imageLoader.image, "Failed to load image")
         }
     }
-
 }
+
