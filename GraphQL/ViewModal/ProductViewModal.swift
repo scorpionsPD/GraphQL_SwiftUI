@@ -9,21 +9,79 @@ import Foundation
 import Apollo
 
 class ProductViewModel: ObservableObject {
+    // MARK: - Properties
+    
+    // Published property to update the UI when products are fetched
     @Published var products: [Product] = []
     
+    // URL of the local JSON file for initial data
     private let fileURL: URL
+    
+    // Apollo Client to make GraphQL API requests
     private let apollo = ApolloClient(url: URL(string:"https://www.greenbowsports.com/graphql")!)
+    
+    // Flag to check if an API request is already in progress
+    private var isFetching = false
+    
+    // Published property to show/hide the error alert
+    @Published var showErrorAlert = false
+    
+    // Error message to be displayed in the alert
+    @Published var errorMessage = ""
+    
+    // Cached products to avoid unnecessary API calls
+    private var cachedProducts: [Product] = []
+    
+    // MARK: - Initialization
     
     init(fileURL: URL = Bundle.main.url(forResource: "products", withExtension: "json")!) {
         self.fileURL = fileURL
     }
     
-    func fetchProducts(completion: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            let data = try Data(contentsOf: fileURL)
-            let response = try JSONDecoder().decode(Response.self, from: data)
-            
-            products = response.data.products.items.map { item in
+    // MARK: - Fetch Products
+    
+    // Fetch products from the GraphQL API or use cached data
+    func fetchCategoryProducts(completion: @escaping (Result<Void, Error>) -> Void) {
+        
+        // Avoid multiple API calls by checking isFetching flag
+        guard !isFetching else {
+            return
+        }
+        isFetching = true
+        
+        let query = ProductQueryQuery()
+        apollo.fetch(query: query) { [weak self] result in
+            self?.isFetching = false
+            switch result {
+            case .success(let graphQLResult):
+                // Parse GraphQL data and update products array if successful
+                guard let productsData = self?.parseGraphQLData(data: graphQLResult) else {
+                    completion(.failure(ProductError.invalidData))
+                    return
+                }
+                self?.products = productsData
+                completion(.success(()))
+            case .failure(let error):
+                // Handle API failure and show alert with error message
+                self?.showErrorAlert = true
+                self?.errorMessage = "Error fetching category products: \(error.localizedDescription)"
+                // Load local products in case of API failure if required
+                // self?.loadLocalProducts()
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - Local Data
+    
+    // Load initial data from the local JSON file asynchronously
+    private func loadLocalProducts() {
+        DispatchQueue.global().async { [weak self] in
+            guard let data = try? Data(contentsOf: self?.fileURL ?? URL(fileURLWithPath: "")),
+                  let response = try? JSONDecoder().decode(Response.self, from: data) else {
+                return
+            }
+            self?.products = response.data.products.items.map { item in
                 Product(
                     id: item.id,
                     sku: item.sku,
@@ -32,35 +90,36 @@ class ProductViewModel: ObservableObject {
                     imageURL: URL(string: item.image.url)!
                 )
             }
-            completion(.success(()))
-        } catch {
-            completion(.failure(error))
         }
     }
-    // This function handles the retrieval of products from the GraphQL endpoint using Apollo framework.
-    // It returns an array of products fetched from the server, or an empty array if there was an error during the retrieval process.
-    /*
-    // Funtions needs to be complete after haldle all errors of Apollo framework. it will return same array of products
-    func fetchCategoryProducts(completion: @escaping ([Product]?) -> Void) {
-        let query = ProductQueryQuery()
-        apollo.fetch(query: query) { (result in
-                                      switch result {
-                                      case .success(let graphQLResult):
-     // If successful, return the array of fetched products
-       
-                                          guard let productsData = graphQLResult else {
-                                              completion(nil)
-                                              return
-                                          }
-                                          completion(products)
-                                      case .failure(let error):
-     // If there was an error, handle the error and return an empty array
-                                          print("Error fetching category products: \(error)")
-                                          completion(nil)
-                                      }
+    
+    // MARK: - Data Parsing
+    
+    // Parse GraphQL data and create an array of Product objects
+    private func parseGraphQLData(data: GraphQLResult<ProductQueryQuery.Data>?) -> [Product]? {
+        guard let products = data?.data?.products?.items else {
+            return []
+        }
+        
+        return products.compactMap { item in
+            guard let id = item?.id,
+                  let sku = item?.sku,
+                  let name = item?.name,
+                  let priceValue = item?.price?.regularPrice?.amount?.value,
+                  let currency = item?.price?.regularPrice?.amount?.currency,
+                  let imageUrl = item?.image?.url else {
+                return nil
+            }
             
+            let price = Double(priceValue)
+            return Product(id: id, sku: sku, name: name, price: price, imageURL: (URL(string:imageUrl) ?? URL(string: ""))!)
         }
     }
-     */
+    
+    // MARK: - Error Handling
+    
+    // Define custom ProductError for better error handling
+    enum ProductError: Error {
+        case invalidData
+    }
 }
-

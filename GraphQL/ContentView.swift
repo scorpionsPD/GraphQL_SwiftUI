@@ -14,7 +14,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List(viewModel.products) { product in
+            List(viewModel.products, id: \.id) { product in
                 // Navigate to the ProductDetailView when tapped
                 NavigationLink(destination: ProductDetailView(product: product)) {
                     HStack {
@@ -41,8 +41,11 @@ struct ContentView: View {
             }
             .navigationTitle("Products") // Set the navigation title
         }
+        .alert(isPresented: $viewModel.showErrorAlert) {
+            Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("OK")))
+        }
         .onAppear {
-            viewModel.fetchProducts { result in
+            viewModel.fetchCategoryProducts() { result in
                 switch result {
                 case .success:
                     // Data fetched successfully
@@ -55,6 +58,7 @@ struct ContentView: View {
         }
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
