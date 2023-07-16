@@ -48,7 +48,7 @@ class ProductViewModelTests: XCTestCase {
         let viewModel = ProductViewModel()
         let expectation = XCTestExpectation(description: "Fetch products")
         
-        viewModel.fetchProducts { result in
+        viewModel.fetchCategoryProducts { result in
             switch result {
             case .success:
                 // Assert that the products array is not empty after fetching
@@ -67,7 +67,7 @@ class ProductViewModelTests: XCTestCase {
         let viewModel = ProductViewModel(fileURL: URL(fileURLWithPath: "invalid/path.json"))
         let expectation = XCTestExpectation(description: "Fetch products")
         
-        viewModel.fetchProducts { result in
+        viewModel.fetchCategoryProducts { result in
             switch result {
             case .success:
                 XCTFail("Fetching products succeeded unexpectedly")
@@ -81,6 +81,25 @@ class ProductViewModelTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5)
     }
+    
+    func testFetchCategoryProductsSuccess() {
+        let viewModel = ProductViewModel()
+
+        let expectation = XCTestExpectation(description: "Products fetched successfully")
+        
+        viewModel.fetchCategoryProducts { result in
+            switch result {
+            case .success:
+                XCTAssertFalse(viewModel.products.isEmpty, "Products should not be empty")
+                expectation.fulfill()
+            case .failure:
+                XCTFail("Fetching products should succeed")
+            }
+        }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
+    
 }
 
 class ImageLoaderTests: XCTestCase {
